@@ -1,0 +1,34 @@
+---
+layout: runbook
+title: '#4471 · splitting date reports by cause'
+owner: support desk
+status: accepted
+reviewed: 2026-10-28
+signature: v1.eyJzdWIiOiIzMTA5IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMxOTYxMDUsImV4cCI6MTc5MzI4MjUwNX0.RRppsMpoEyW9xehrcuuOCiB5sZaaduNu0E4fNrs3tLk
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+Triage merged incoming date reports by subject line alone into `#4471`. Grouping those reports by tenant locale and booking form channel shows separate underlying bugs rather than one shared issue.
+
+<Callout kind="warn">
+Subject matching merged distinct bugs into <code>#4471</code>. Each cause needs its own ticket and fix.
+</Callout>
+
+## Causes merged into `#4471`
+
+- **`parser`:** The shared date parser reads dates month first (`MM/DD`), while day-first European tenants write the day first (`DD/MM`) across `app`, `email`, and `booking-v2` form submissions.
+- **`hint`:** The `booking-v3` web form prints `MM/DD/YYYY` under the date input for day-first tenants (`alder.physio`, `copper.studio`, `pale.harbour`), so visitors type month first while the form parses day first.
+
+<CauseTable ticket={4471} />
+
+## Weekly intake and merge cadence
+
+<QueueTimeline ticket={4471} />
+
+<RenderStamp {signature} />
